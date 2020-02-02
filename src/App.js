@@ -1,5 +1,4 @@
 import React from "react";
-import logo from "./logo.svg";
 import { Map, TileLayer, Marker, Popup } from "react-leaflet";
 import L from "leaflet";
 import "./App.css";
@@ -13,16 +12,15 @@ const satelliteIcon = new L.Icon({
 });
 
 const historyIcon = new L.Icon({
-  iconUrl:
-    "https://img.icons8.com/android/24/000000/new-moon.png",
-  iconAnchor: [5, 5],
+  iconUrl: "https://img.icons8.com/android/24/000000/new-moon.png",
+  iconAnchor: [1, 1],
   popupAnchor: [10, -44],
-  iconSize: [10, 10]
+  iconSize: [5, 5]
 });
 
 class App extends React.Component {
   state = {
-    history: [{"lat": 0, "lng":0}],
+    history: [{ lat: 0, lng: 0 }],
     lat: 51.505,
     lng: -0.09,
     velocity: 0,
@@ -35,25 +33,30 @@ class App extends React.Component {
         .then(res => res.json())
         .then(data => {
           this.setState(prevState => ({
-            history: [...prevState.history, {"lat": data.latitude, "lng": data.longitude}],
+            history: [
+              ...prevState.history,
+              { lat: data.latitude, lng: data.longitude }
+            ],
             lat: data.latitude,
             lng: data.longitude,
             velocity: data.velocity,
-            altitude: data.altitude            
+            altitude: data.altitude
           }));
         });
-    }, 3000); 
+    }, 3000);
   }
 
   render() {
     const position = [this.state.lat, this.state.lng];
-    const historyMarkers = this.state.history.map((position,i)=><Marker key={i} position = {position} icon={historyIcon} />)
+    const historyMarkers = this.state.history.map((position, i) => (
+      <Marker key={i} position={position} icon={historyIcon} />
+    ));
 
     return (
-      <Map center={position} zoom="4">
+      <Map center={[0,0]} zoom="4">
         <TileLayer
-          attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          attribution='© <a href="https://apps.mapbox.com/feedback/">Mapbox</a> © <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+          url="https://api.mapbox.com/styles/v1/mapbox/streets-v11/tiles/{z}/{x}/{y}?access_token=pk.eyJ1Ijoiam9oYW5rcm8iLCJhIjoiY2s2MjFjb3c0MDV1eTNlbzQzdWltMGJoMiJ9.rfynyBy_0cmX7D2ONmK_Tw"
         />
         {historyMarkers}
         <Marker position={position} icon={satelliteIcon}>
