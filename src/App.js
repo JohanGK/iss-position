@@ -39,7 +39,9 @@ class App extends React.Component {
     return (
       <div>
         <MapComponent history={this.state.history} />
-        <HistoryList history={this.state.history} />
+        {this.state.history.length > 0 && (
+          <HistoryList history={this.state.history} />
+        )}
       </div>
     );
   }

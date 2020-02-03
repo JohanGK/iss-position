@@ -10,7 +10,7 @@ export default class MapComponent extends React.Component {
       <HistoryMarker data={currentData} key={i} />
     ));
     if (this.props.history.length > 0) {
-      markers.push( <SatelliteMarker data={currentData} />);
+      markers.push( <SatelliteMarker data={currentData} key="-1" />);
     }
 
     return (
